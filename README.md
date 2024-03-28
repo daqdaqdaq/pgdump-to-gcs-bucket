@@ -29,7 +29,7 @@ Deploy it into your Docker environment.
 |`LOCAL_DIR`            |The path of the local directory to hold the backup files                                                 |`/app/dmp`          |  
 |`CRON_SCHEDULE`        |Cron schedule string to schedule the backup                                                              |`0 0 * * *`         |
 |`PGHOST`               |Host name of the Postgres instance you want to backup.                                                   |`localhost`         |
-|`PGPORT`               |Port of the Postgres instance you want to backup.                                                        |5432                |
+|`PGPORT`               |Port of the Postgres instance you want to backup.                                                        |`5432`                |
 |`PREFIX`               |Filename prefix for the .dmp file. The files are stored under this directory name in the bucket as well  |`${PGDATABASE}`     |
 
 
