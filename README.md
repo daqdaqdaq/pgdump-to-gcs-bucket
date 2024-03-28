@@ -16,7 +16,7 @@ Deploy it into your Docker environment.
 
 ## Secrets
 
-* `POSTGRESQL_PASSWORD`: Password of the PostgreSQL user to make the dump.
+* `POSTGRESQL_PASSWORD`: Password of the PostgreSQL user to make the backup.
 * `GOOGLE_APPLICATION_CREDENTIALS`: Google Service Account cretentials in json format
 
 ## Supported ENV variables
