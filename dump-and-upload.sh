@@ -1,7 +1,6 @@
 #!/bin/bash
 
 SECTION=$1
-#f"{params['pghost']} {params['pgport']} {params['pguser']} {params['pgpassword_secret']} {params['pgdatabase']} {params['prefix']}
 
 read PGHOST PGPORT PGUSER SECRET_NAME PGDATABASE PREFIX MAXFILES <<< "$(python3 /app/extract-params.py "$SECTION")"
 LOCAL_DIR=${LOCAL_DIR:-"/app/dmp"}

@@ -39,16 +39,16 @@ maxfiles = 4
 
 If there is no prefix defined the name of the table will be used as prefix for the backup file and as directory name to store the files in the bucket as well.
 
-|Name                   |Description                                                                                              | Default value       |
-|-----------------------|---------------------------------------------------------------------------------------------------------|---------------------|
-|`schedule`             |Cron schedule for the backup job                                                                         | `0 0 * * *`         |
-|`pghost`               |Hostname of the PostgreSQL server                                                                        | Required            |
-|`pgport`               |Port of the PostgreSQL server                                                                            | `5432`              |
-|`pguser`               |Username to connect to the PostgreSQL server                                                             | `postgres`          |
-|`pgpassword_secret`    |Name of the secret containing the password                                                               | Required            |
-|`pgdatabase`           |Name of the database to backup                                                                           | Required            |
-|`prefix`               |Prefix for the backup file name                                                                          | `Name of the table` |
-|`maxfiles`             |Number of backup files to keep                                                                           | `5`                 |
+|Name                   | Description                                          | Default value       |
+|-----------------------|------------------------------------------------------|---------------------|
+|`schedule`             | Cron schedule for the backup job                     | `0 0 * * *`         |
+|`pghost`               | Hostname of the PostgreSQL server                    | Required            |
+|`pgport`               | Port of the PostgreSQL server                        | `5432`              |
+|`pguser`               | Username to connect to the PostgreSQL server         | `postgres`          |
+|`pgpassword_secret`    | Name of the secret containing the password           | Required            |
+|`pgdatabase`           | Name of the database to backup                       | Required            |
+|`prefix`               | Prefix for the backup file name                      | `Name of the table` |
+|`maxfiles`             | Number of backup files to keep. 0: keep all files    | `5`                 |
 
 # Todo
 
