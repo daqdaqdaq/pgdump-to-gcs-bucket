@@ -1,0 +1,18 @@
+[databaseone]
+schedule = '0 0 * * *'
+pghost = "host1"
+pgport = 5432
+pguser = "user"
+pgpassword_secret = "PGPASSWORD" # Name of the secret containing the password
+pgdatabase = "database"
+prefix = "databaseone"
+
+
+[databasetwo]
+schedule = '*\5 * * * *'
+pghost = "host2"
+pgport = 5432
+pguser = "user"
+pgpassword_secret = "ANOTHERPGPASSWORD"
+pgdatabase = "database2"
+maxfiles = 4

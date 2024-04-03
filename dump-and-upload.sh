@@ -1,28 +1,29 @@
 #!/bin/bash
-PGHOST=${PGHOST:-localhost}
-PGUSER=${PGUSER:-postgres}
-PGPORT=${PGPORT:-5432}
-PREFIX=${PREFIX:-$PGDATABASE}
-MAXFILES=${MAXFILES:-5}
+
+SECTION=$1
+#f"{params['pghost']} {params['pgport']} {params['pguser']} {params['pgpassword_secret']} {params['pgdatabase']} {params['prefix']}
+
+read PGHOST PGPORT PGUSER SECRET_NAME PGDATABASE PREFIX MAXFILES <<< "$(python3 /app/extract-params.py "$SECTION")"
 LOCAL_DIR=${LOCAL_DIR:-"/app/dmp"}
 GCS_BUCKET="gs://$BUCKET"
 
 
-export PGPASSWORD=$(cat /run/secrets/POSTGRESQL_PASSWORD)
+export PGPASSWORD=$(cat /run/secrets/"$SECRET_NAME")
 export GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/GOOGLE_APPLICATION_CREDENTIALS
 
 mkdir -p $LOCAL_DIR
 current_time=$(date +"%Y%m%d%H%M")
-filename="${LOCAL_DIR}/${PREFIX}_${current_time}.dmp"
-pg_dump -Fc -h$PGHOST -p$PGPORT -U$PGUSER $PGDATABASE > $filename
+filename="${PREFIX}_${current_time}.dmp"
+filepath="${LOCAL_DIR}/${PREFIX}_${current_time}.dmp"
+pg_dump -Fc -h$PGHOST -p$PGPORT -U$PGUSER $PGDATABASE > $filepath
 
-for file in "$LOCAL_DIR"/*; do
-    filename=$(basename "$file")
-	file_path="$GCS_BUCKET/$PREFIX/$filename"
-    if ! gsutil -q stat $file_path; then
-        gsutil cp "$file" "$GCS_BUCKET/$PREFIX/"
-    fi
-done
+bucket_path="$GCS_BUCKET/$PREFIX/$filename"
+if ! gsutil -q stat "$bucket_path"; then
+    gsutil cp "$filepath" "$GCS_BUCKET/$PREFIX/"
+fi
+
+# Remove the local dump file
+rm -f $filepath
 
 if [ ${MAXFILES} -eq 0 ]; then
   exit 0

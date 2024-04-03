@@ -9,7 +9,8 @@ RUN apk add --no-cache \
     postgresql16-client \
     busybox-suid \
     curl \
-    bash
+    bash \
+    py3-toml
 
 RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-470.0.0-linux-x86_64.tar.gz && \
     tar xzf google-cloud-sdk-470.0.0-linux-x86_64.tar.gz && \
@@ -24,8 +25,7 @@ RUN gcloud config set core/disable_usage_reporting true && \
 	gcloud config set metrics/environment github_docker_image
 
 # Copy the current directory contents into the container at /app
-COPY dump-and-upload.sh /app/dump-and-upload.sh
-COPY start.sh /app/start.sh
+COPY dump-and-upload.sh start.sh build-cron.py extract-params.py /app/
 RUN chmod +x /app/*
 
 WORKDIR /app
@@ -34,4 +34,4 @@ WORKDIR /app
 RUN touch /var/log/cron.log
 
 # Run the command on container startup
-CMD ["bash", "-c", "/app/start.sh"]
+CMD ["bash", "-c", "/app/start.sh; crond -f -l 2 -L /dev/stdout"]
