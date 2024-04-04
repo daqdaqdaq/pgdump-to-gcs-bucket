@@ -12,17 +12,23 @@ RUN apk add --no-cache \
     bash \
     py3-toml
 
-RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-470.0.0-linux-x86_64.tar.gz && \
-    tar xzf google-cloud-sdk-470.0.0-linux-x86_64.tar.gz && \
-    rm google-cloud-sdk-470.0.0-linux-x86_64.tar.gz
-
-# Add the Cloud SDK to the PATH
 ENV PATH /google-cloud-sdk/bin:$PATH
 
-# Initialize the SDK
-RUN gcloud config set core/disable_usage_reporting true && \
+RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-470.0.0-linux-x86_64.tar.gz && \
+    tar xzf google-cloud-sdk-470.0.0-linux-x86_64.tar.gz && \
+    rm google-cloud-sdk-470.0.0-linux-x86_64.tar.gz && \
+    gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
-	gcloud config set metrics/environment github_docker_image
+	gcloud config set metrics/environment github_docker_image && \
+    gcloud components remove  bq && \
+    rm -rf $(find google-cloud-sdk/ -regex ".*/__pycache__") && \
+    rm -rf /google-cloud-sdk/bin/anthoscli && \
+    rm -rf google-cloud-sdk/.install/.backup
+# Add the Cloud SDK to the PATH
+
+
+# Initialize the SDK
+
 
 # Copy the current directory contents into the container at /app
 COPY dump-and-upload.sh start.sh build-cron.py extract-params.py /app/
